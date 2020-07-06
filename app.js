@@ -76,3 +76,14 @@ function runSearch() {
             }
         });
 }
+
+function accessAll() {
+    var query =
+        'SELECT * FROM employee';
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+        console.log('*************All Employees**************');
+        console.table(res);
+        runSearch();
+    });
+}
