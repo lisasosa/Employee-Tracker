@@ -25,7 +25,8 @@ last_name VARCHAR(30) NOT NULL,
 role_id INTEGER(10) NOT NULL,
 manager_id INTEGER(10),
 PRIMARY KEY (id),
-FOREIGN KEY (role_id) REFERENCES employee_role (id)
+FOREIGN KEY (role_id) REFERENCES employee_role (id),
+FOREIGN KEY (manager_id) REFERENCES employee (id)
 );
 
 SELECT * FROM department;
@@ -58,6 +59,10 @@ VALUES
 INSERT INTO employee_role
 (title, salary, department_id)
 VALUES
+("Accounting Team Lead", 160000, 3);
+INSERT INTO employee_role
+(title, salary, department_id)
+VALUES
 ("Accountant", 125000, 3);
 INSERT INTO employee_role
 (title, salary, department_id)
@@ -67,10 +72,6 @@ INSERT INTO employee_role
 (title, salary, department_id)
 VALUES
 ("Lawyer", 190000, 4);
-INSERT INTO employee_role
-(title, salary, department_id)
-VALUES
-("Software Engineer", 120000, 2);
 SELECT * FROM employee_role;
 
 INSERT INTO employee
