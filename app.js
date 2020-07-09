@@ -60,7 +60,7 @@ function runSearch() {
 
 
                 case "Add Department":
-                    addEmpoloyee();
+                    addDepartment();
                     break;
 
                 case "Add role":
@@ -218,9 +218,29 @@ function addEmployee() {
             }
             connection.query(query, VALUES, function (err) {
                 if (err) throw err;
-                console.log('Employee has been added')
+                console.log('Employee has been added');
                 runSearch()
             })
         })
     })
+}
+
+function addDepartment() {
+    inquirer
+        .prompt({
+            name: 'newDep',
+            type: 'input',
+            message: 'Enter the name of the department you would like to add'
+        })
+        .then(function (res) {
+            var query = 'INSERT INTO department SET?'
+            console.log(query)
+            var query1 = connection.query(query, [{
+                dep_name: res.newDep
+            }], function (err) {
+                if (err) throw err;
+                console.table('Department successfully created')
+                runSearch()
+            });
+        })
 }
