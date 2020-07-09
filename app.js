@@ -152,3 +152,55 @@ function updateEmployeeRole() {
         })
     })
 }
+
+function addEmployee() {
+    connection.query('SELECT * FROM employee_role', function (err, results) {
+        if (err) throw err;
+
+        inquirer.prompt([{
+                type: 'input',
+                name: 'firstname',
+                message: "Enter employee's first name"
+            },
+            {
+                type: 'input',
+                name: 'lastname',
+                message: "Enter employee's last name"
+            },
+            {
+                name: 'choice',
+                type: 'rawlist',
+                choices: function () {
+                    var choiceArray = [];
+                    for (var i = 0; i < results.length; i++) {
+                        choiceArray.push(results[i].title);
+                    }
+                    return choiceArray;
+                },
+                message: "Enter employee's role"
+            },
+            {
+                type: 'input',
+                name: 'empmanager',
+                message: "Enter employee's manager"
+            }
+        ]).then(function (res) {
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].title === res.choice) {
+                    res.role_id = results[i].id;
+                }
+            }
+            var query = 'INSERT INTO employee SET ?'
+            const VALUES = {
+                first_name: res.firstname,
+                last_name: res.lastname,
+                role_id: res.role_id
+            }
+            connection.query(query, VALUES, function (err) {
+                if (err) throw err;
+                console.log('Employee has been added')
+                runSearch()
+            })
+        })
+    })
+}
