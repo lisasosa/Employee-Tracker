@@ -30,8 +30,7 @@ function runSearch() {
                 "Update Employee role",
                 "Add employee",
                 "Add Department",
-                "update role",
-                "Add role",
+                "Remove Employee",
                 "Exit",
             ]
 
@@ -62,11 +61,6 @@ function runSearch() {
                 case "Add Department":
                     addDepartment();
                     break;
-
-                case "Add role":
-                    addRole();
-                    break;
-
 
                 case "Exit":
                     connection.end();
