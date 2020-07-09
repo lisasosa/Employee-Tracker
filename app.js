@@ -25,7 +25,7 @@ function runSearch() {
             message: "What would you like to do?",
             choices: [
                 "Access all Employees",
-                "Update Employee",
+                "Update Employee role",
                 "Add employee",
                 "Remove Employee",
                 "Add Department",
@@ -42,8 +42,8 @@ function runSearch() {
                     accessAll();
                     break;
 
-                case "Update Employee":
-                    updateEmployee();
+                case "Update Employee role":
+                    updateEmployeeRole();
                     break;
 
                 case "Add employee":
@@ -86,4 +86,69 @@ function accessAll() {
         console.table(res);
         runSearch();
     });
+}
+
+function updateEmployeeRole() {
+    var queryRole = 'SELECT * FROM employee_role';
+    var queryDepartment = 'SELECT * FROM department';
+
+    connection.query(queryRole, function (err, res) {
+        connection.query(queryDepartment, function (err, departments) {
+
+            if (err) throw err;
+            inquirer.prompt([{
+                    name: "newRole",
+                    type: "rawlist",
+
+                    choices: function () {
+                        var arrayofChoices = [];
+                        for (var i = 0; i < res.length; i++) {
+                            arrayofChoices.push(res[i].title);
+                        }
+                        return arrayofChoices;
+                    },
+                    message: "Which employee role would you like to update?"
+                },
+                {
+                    name: "newSalary",
+                    input: "input",
+                    message: "What salary would you like to enter?"
+                },
+                {
+                    name: 'choice',
+                    type: "rawlist",
+                    choices: function () {
+                        var arrayofChoices = [];
+                        for (var i = 0; i < departments.length; i++) {
+                            arrayofChoices.push(departments[i].dep_name);
+                        }
+                        return arrayofChoices;
+                    },
+                    message: "Enter the name of the department for this role"
+                },
+            ]).then(function (result) {
+                for (var i = 0; i < departments.length; i++) {
+                    if (departments[i].name === result.choice) {
+                        result.department_id = departments[i].id;
+                    }
+                }
+                var query = "UPDATE employee_role SET title=?, salary = ? WHERE department_id = ?"
+                const VALUES = [{
+                        title: result.newRole
+                    },
+                    {
+                        salary: result.newSalary
+                    },
+                    {
+                        department_id: result.department_id
+                    }
+                ]
+                let query1 = connection.query(query, VALUES, function (err) {
+                    if (err) throw err;
+                    console.table('Role has successfully been updated');
+                    runSearch()
+                });
+            })
+        })
+    })
 }
