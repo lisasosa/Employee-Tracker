@@ -29,7 +29,7 @@ FOREIGN KEY (role_id) REFERENCES employee_role (id),
 FOREIGN KEY (manager_id) REFERENCES employee (id)
 );
 
-SELECT * FROM department;
+
 INSERT INTO department (dep_name)
 VALUES ("Sales");
 INSERT INTO department (dep_name)
@@ -38,6 +38,7 @@ INSERT INTO department (dep_name)
 VALUES ("Finance");
 INSERT INTO department (dep_name)
 VALUES ("Legal");
+SELECT * FROM department;
 
 
 INSERT INTO employee_role
